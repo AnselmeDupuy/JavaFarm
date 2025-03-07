@@ -1,15 +1,17 @@
 package Farm;
 
+import java.util.ArrayList;
+
 public class Farm {
     int coins;
     int wheat;
     int rice;
     int millet;
-    int cows;
     int muttons;
     int horses;
+    int cows;
 
-    public void constructFarm(int coins, int wheat, int rice, int millet, int cows, int muttons, int horses) {
+    public void constructFarm(int coins, int wheat, int rice, int millet, int cows) {
         this.coins = coins;
         this.wheat = wheat;
         this.rice = rice;
@@ -115,6 +117,14 @@ public class Farm {
 
     public void removeHorses(int horses) {
         this.horses -= horses;
+    }
+
+    public void addCow(int cows) {
+        this.cows += cows;
+    }
+
+    public void removeCow(){
+        this.cows = 0;
     }
 
 

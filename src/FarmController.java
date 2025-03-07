@@ -1,3 +1,4 @@
+import Animals.Animals;
 import Crops.Millet;
 import Crops.Rice;
 import Crops.Wheat;
@@ -22,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import Animals.Cows;
 
 public class FarmController {
     @FXML
@@ -43,13 +45,15 @@ public class FarmController {
     @FXML
     private Pane choiceBtn;
 
-    private String seedName = "";
     private Farm farm = new Farm();
     private WheatSeed wheatSeed = new WheatSeed();
     private RiceSeed riceSeed = new RiceSeed();
     private MilletSeed milletSeed = new MilletSeed();
     private Rice rice = new Rice("Rice", 30);
     private Millet millet = new Millet("Millet", 150);
+    private boolean isBought = false;
+    private int isCrop;
+
 
     public void initialize() {
         int rows = 3;
@@ -65,53 +69,126 @@ public class FarmController {
                 gridPane.setAlignment(Pos.CENTER);
 
                 button.setOnMouseClicked((event) -> {
+                    Stage choiceType = new Stage();
+                    choiceType.initModality(Modality.APPLICATION_MODAL);
+                    choiceType.setTitle("Choice animals or crop");
+                    Button animalBtn = new Button("Animals");
+                    Button cropBtn = new Button("Crops");
+                    VBox choiceVbox = new VBox(animalBtn, cropBtn);
+                    choiceType.setScene(new Scene(choiceVbox, 100,100));
+                    choiceVbox.setAlignment(Pos.CENTER);
 
-                    Stage stage = new Stage();
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.setTitle("What to plant");
-                    Button btnRice = new Button("Crop: rice");
-                    Button btnMillet = new Button("Crop: millet");
-                    Button btnWheat = new Button("Crop: wheat");
-                    VBox vbox = new VBox(btnRice, btnMillet, btnWheat);
-                    vbox.setAlignment(Pos.CENTER);
-                    stage.setScene(new Scene(vbox,100, 100));
+                    animalBtn.setOnMouseClicked((e) -> {
+                        if (button.getText().equals("Animal field")) {
+                            isBought = true;
+                        } else {
+                            isBought = false;
+                        }
+                        if(farm.getCoins() > 149 && isBought == false) {
+                            farm.removeCoins(150);
+                            button.setText("Animal field");
+                            choiceType.close();
 
-                    btnWheat.setOnMouseClicked(event1 -> {
-                        System.out.println("Wheat seed planted");
-                        Wheat wheat = new Wheat("wheat", 100);
-                        Timeline growingTime = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-                            if (wheat.getStage() == 4) {
-                                button.setText("Choose seed to plant");
-                                wheat.harvest();
-                                button.setDisable(false);
-                            } else if (wheat.getStage() < 4 && wheat.getStage() >= 0){
-                                button.setDisable(true);
-                                wheat.grow();
-                                button.setText("seed planted, stage: " + wheat.getStage());
-                                wheat.addToQuantity(1);
+                        } else if (isBought == true){
+                            Cows cows = new Cows("Cows", 150);
+                            cows.growingTime(button, farm);
+                            choiceType.close();
+                        } else {
+                            Timeline growingTime = new Timeline(new KeyFrame(Duration.seconds(1), e2 -> {
+                                button.setText("Price: 150Coins");
+                            }));
+                            button.setText("Not enough Coins");
+                            growingTime.setCycleCount(3);
+                            growingTime.play();
+                        }
+                    });
 
-                            } else {
-                                button.setText("Plant Seed");
-                            }
-                        }));
-                        growingTime.setCycleCount(5);
-                        growingTime.play();
-                        seedName = "Wheat";
-                        stage.close();
+                    cropBtn.setOnMouseClicked((e) -> {
+                        if (button.getText().equals("Choose seed to plant")) {
+                            isBought = true;
+                        } else {
+                            isBought = false;
+                        }
+                        if(farm.getCoins() > 150 && isBought == false) {
+                            farm.removeCoins(150);
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.setTitle("What to plant");
+                            Button btnRice = new Button("Crop: rice");
+                            Button btnMillet = new Button("Crop: millet");
+                            Button btnWheat = new Button("Crop: wheat");
+                            VBox vbox = new VBox(btnRice, btnMillet, btnWheat);
+                            vbox.setAlignment(Pos.CENTER);
+                            stage.setScene(new Scene(vbox,100, 100));
+
+                            choiceType.close();
+
+                            btnWheat.setOnMouseClicked(event1 -> {
+                                System.out.println("Wheat seed planted");
+                                Wheat wheat = new Wheat("wheat", 50);
+                                wheat.growingTime(button, farm);
+                                stage.close();
+                            });
+
+                            btnMillet.setOnMouseClicked(event1 -> {
+                                System.out.println("Millet seed planted");
+                                Millet millet = new Millet("millet", 75);
+                                millet.growingTime(button, farm);
+                                stage.close();
+                            });
+
+                            btnRice.setOnMouseClicked(event1 ->{
+                                System.out.println("Rice seed planted");
+                                Rice rice = new Rice("rice", 25);
+                                rice.growingTime(button, farm);
+                                stage.close();
+                            });
+
+                            stage.show();
+
+
+                        } else if (isBought == true){
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.setTitle("What to plant");
+                            Button btnRice = new Button("Crop: rice");
+                            Button btnMillet = new Button("Crop: millet");
+                            Button btnWheat = new Button("Crop: wheat");
+                            VBox vbox = new VBox(btnRice, btnMillet, btnWheat);
+                            vbox.setAlignment(Pos.CENTER);
+                            stage.setScene(new Scene(vbox,100, 100));
+
+                            btnWheat.setOnMouseClicked(event1 -> {
+                                System.out.println("Wheat seed planted");
+                                Wheat wheat = new Wheat("wheat", 50);
+                                wheat.growingTime(button, farm);
+                                stage.close();
+                            });
+
+                            btnMillet.setOnMouseClicked(event1 -> {
+                                System.out.println("Millet seed planted");
+                                Millet millet = new Millet("millet", 75);
+                                millet.growingTime(button, farm);
+                                stage.close();
+                            });
+
+                            btnRice.setOnMouseClicked(event1 ->{
+                                System.out.println("Rice seed planted");
+                                Rice rice = new Rice("rice", 25);
+                                rice.growingTime(button, farm);
+                                stage.close();
+                            });
+                            choiceType.close();
+                        } else {
+                            Timeline growingTime = new Timeline(new KeyFrame(Duration.seconds(1), e2 -> {
+                                button.setText("Price: 150Coins");
+                            }));
+                            button.setText("Not enough Coins");
+                            growingTime.setCycleCount(3);
+                            growingTime.play();
+                        }
                     });
-                    btnMillet.setOnMouseClicked(event1 -> {
-                        System.out.println("Millet seed planted");
-                        seedName = "Millet";
-                        button.setText(seedName);
-                        stage.close();
-                    });
-                    btnRice.setOnMouseClicked(event1 ->{
-                        System.out.println("Rice seed planted");
-                        seedName = "Rice";
-                        button.setText(seedName);
-                        stage.close();
-                    });
-                    stage.show();
+                    choiceType.showAndWait();
                 });
                 gridPane.add(button, col, row);
             }

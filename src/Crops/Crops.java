@@ -81,4 +81,9 @@ public abstract class Crops {
     public void addToQuantity(int quantity) {
         this.quantity += quantity;
     }
+
+    public void subFromQuantity(int quantity) {
+        this.quantity -= quantity;
+    }
+
 }
