@@ -28,24 +28,7 @@ import Animals.Cows;
 public class FarmController {
     @FXML
     private GridPane gridPane;
-    @FXML
-    private Label coinLabel;
-    @FXML
-    private Label wheatLabel;
-    @FXML
-    private Label riceLabel;
-    @FXML
-    private Label milletLabel;
-    @FXML
-    private Label cowsLabel;
-    @FXML
-    private Label muttonsLabel;
-    @FXML
-    private Label horsesLabel;
-    @FXML
-    private Pane choiceBtn;
 
-    private Farm farm = new Farm();
     private WheatSeed wheatSeed = new WheatSeed();
     private RiceSeed riceSeed = new RiceSeed();
     private MilletSeed milletSeed = new MilletSeed();
@@ -54,15 +37,17 @@ public class FarmController {
     private boolean isBought = false;
     private int isCrop;
 
-
     public void initialize() {
+        Farm farm = new Farm();
+        farm.getAll();
+
         int rows = 3;
         int columns = 3;
 
-        farm.constructFarm();
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
+
                 Button button = new Button("Price: 150Coins");
                 gridPane.setHalignment(button, javafx.geometry.HPos.CENTER);
                 gridPane.setValignment(button, javafx.geometry.VPos.CENTER);
@@ -72,7 +57,7 @@ public class FarmController {
                     Stage choiceType = new Stage();
                     choiceType.initModality(Modality.APPLICATION_MODAL);
                     choiceType.setTitle("Choice animals or crop");
-                    Button animalBtn = new Button("Animals");
+                    Button animalBtn = new Button("Cows");
                     Button cropBtn = new Button("Crops");
                     VBox choiceVbox = new VBox(animalBtn, cropBtn);
                     choiceType.setScene(new Scene(choiceVbox, 100,100));
@@ -84,9 +69,10 @@ public class FarmController {
                         } else {
                             isBought = false;
                         }
-                        if(farm.getCoins() > 149 && isBought == false) {
+                        if(farm.getCoins() > 149 && !isBought) {
+                            System.out.println(farm.seedsNumber());
                             farm.removeCoins(150);
-                            button.setText("Animal field");
+                            button.setText("Cow growing");
                             choiceType.close();
 
                         } else if (isBought == true){
@@ -105,12 +91,12 @@ public class FarmController {
                     });
 
                     cropBtn.setOnMouseClicked((e) -> {
-                        if (button.getText().equals("Choose seed to plant")) {
+                        if (button.getText().equals("Choose seed to plant") || button.getText().equals("Animal field")) {
                             isBought = true;
                         } else {
                             isBought = false;
                         }
-                        if(farm.getCoins() > 150 && isBought == false) {
+                        if(farm.getCoins() > 149 && !isBought  && farm.seedsNumber() != 0) {
                             farm.removeCoins(150);
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
@@ -126,6 +112,7 @@ public class FarmController {
 
                             btnWheat.setOnMouseClicked(event1 -> {
                                 System.out.println("Wheat seed planted");
+                                button.setText("Crop: wheat");
                                 Wheat wheat = new Wheat("wheat", 50);
                                 wheat.growingTime(button, farm);
                                 stage.close();
@@ -133,6 +120,7 @@ public class FarmController {
 
                             btnMillet.setOnMouseClicked(event1 -> {
                                 System.out.println("Millet seed planted");
+                                button.setText("Crop: millet");
                                 Millet millet = new Millet("millet", 75);
                                 millet.growingTime(button, farm);
                                 stage.close();
@@ -140,6 +128,7 @@ public class FarmController {
 
                             btnRice.setOnMouseClicked(event1 ->{
                                 System.out.println("Rice seed planted");
+                                button.setText("Crop: rice");
                                 Rice rice = new Rice("rice", 25);
                                 rice.growingTime(button, farm);
                                 stage.close();
@@ -147,8 +136,7 @@ public class FarmController {
 
                             stage.show();
 
-
-                        } else if (isBought == true){
+                        } else if (isBought && farm.seedsNumber() != 0) {
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.setTitle("What to plant");
@@ -180,14 +168,18 @@ public class FarmController {
                                 stage.close();
                             });
                             choiceType.close();
-                        } else {
+                            stage.show();
+                        } else if (!isBought && farm.getCoins() < 150) {
                             Timeline growingTime = new Timeline(new KeyFrame(Duration.seconds(1), e2 -> {
                                 button.setText("Price: 150Coins");
                             }));
                             button.setText("Not enough Coins");
                             growingTime.setCycleCount(3);
                             growingTime.play();
+                        } else  {
+                            button.setText("Not enough Seeds");
                         }
+
                         choiceType.close();
                     });
                     choiceType.showAndWait();

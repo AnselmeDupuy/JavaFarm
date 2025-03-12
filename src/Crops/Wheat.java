@@ -14,15 +14,15 @@ public class Wheat extends Crops {
     }
 
     public void growingTime(Button button, Farm farm) {
+        button.setDisable(true);
         Timeline growingTime = new Timeline(new KeyFrame(Duration.seconds(2), e -> {
             if (this.getStage() == 4) {
+                button.setDisable(false);
                 button.setText("Choose seed to plant");
                 this.harvest();
                 farm.addWheat(1);
                 System.out.println(farm.getWheat());
-                button.setDisable(false);
             } else if (this.getStage() < 4 && this.getStage() >= 0){
-                button.setDisable(true);
                 this.grow();
                 button.setText("seed planted, stage: " + this.getStage());
                 this.addToQuantity(1);

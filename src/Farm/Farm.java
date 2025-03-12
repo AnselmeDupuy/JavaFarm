@@ -3,15 +3,19 @@ package Farm;
 import java.util.ArrayList;
 
 public class Farm {
-    int coins;
-    int wheat;
-    int rice;
-    int millet;
-    int muttons;
-    int horses;
-    int cows;
+    static int coins;
+    static int wheat;
+    static int rice;
+    static int millet;
+    static int muttons;
+    static int horses;
+    static int cows;
+    static int wheatSeeds;
+    static int riceSeeds;
+    static int milletSeeds;
+    private int total;
 
-    public void constructFarm(int coins, int wheat, int rice, int millet, int cows) {
+    public void constructFarm(int coins, int wheat, int rice, int millet, int cows, int wheatSeeds, int riceSeeds, int milletSeeds) {
         this.coins = coins;
         this.wheat = wheat;
         this.rice = rice;
@@ -19,6 +23,9 @@ public class Farm {
         this.cows = cows;
         this.muttons = muttons;
         this.horses = horses;
+        this.wheatSeeds = wheatSeeds;
+        this.riceSeeds = riceSeeds;
+        this.milletSeeds = milletSeeds;
     }
 
     public void constructFarm() {
@@ -29,10 +36,48 @@ public class Farm {
         this.cows = 0;
         this.muttons = 0;
         this.horses = 0;
+        this.wheatSeeds = 10;
+        this.riceSeeds = 0;
+        this.milletSeeds = 0;
     }
 
     public void getAll() {
-        System.out.println("Coins: " + coins + "\nWheat: " + wheat + "\nRice: " + rice + "\nMillet: " + millet + "\nCows: " + cows + "\nMuttons: " + muttons + "\nHorses: " + horses);
+        this.getCoins();
+        this.getWheat();
+        this.getRice();
+        this.getMillet();
+        this.getCows();
+        this.getWheatSeeds();
+        this.getRiceSeeds();
+        this.getMilletSeeds();
+    }
+
+    public int seedsNumber(){
+        return total = wheatSeeds + riceSeeds + milletSeeds;
+    }
+
+    public int getWheatSeeds() {
+        return wheatSeeds;
+    }
+
+    public void addWheatSeeds(int seeds) {
+        this.wheatSeeds += wheatSeeds;
+    }
+
+    public int getRiceSeeds() {
+        return riceSeeds;
+    }
+
+    public void addRiceSeeds(int seeds) {
+        this.riceSeeds += riceSeeds;
+    }
+
+    public int getMilletSeeds() {
+        return milletSeeds;
+    }
+
+    public void addMilletSeeds(int seeds) {
+        this.milletSeeds += milletSeeds;
     }
 
     public int getCoins() {
@@ -55,14 +100,6 @@ public class Farm {
         return cows;
     }
 
-    public int getMuttons() {
-        return muttons;
-    }
-
-    public int getHorses() {
-        return horses;
-    }
-
     public void addCoins(int coins) {
         this.coins += coins;
     }
@@ -83,14 +120,6 @@ public class Farm {
         this.cows += cows;
     }
 
-    public void addMuttons(int muttons) {
-        this.muttons += muttons;
-    }
-
-    public void addHorses(int horses) {
-        this.horses += horses;
-    }
-
     public void removeCoins(int coins) {
         this.coins -= coins;
     }
@@ -109,14 +138,6 @@ public class Farm {
 
     public void removeCows(int cows) {
         this.cows -= cows;
-    }
-
-    public void removeMuttons(int muttons) {
-        this.muttons -= muttons;
-    }
-
-    public void removeHorses(int horses) {
-        this.horses -= horses;
     }
 
     public void addCow(int cows) {
