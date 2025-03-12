@@ -1,9 +1,5 @@
 package Crops;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
-
 public abstract class Crops {
     private String name;
     private int price;
@@ -26,10 +22,10 @@ public abstract class Crops {
             System.out.println("The crop " + this.name + " is growing (stage 1)");
         } else if(stage == 1) {
             stage = 2;
-            System.out.println("The crop is growing (stage 2)");
+            System.out.println("The crop " + this.name + " is growing (stage 2)");
         } else if(stage == 2) {
             stage = 3;
-            System.out.println("The crop is growing (stage 3)");
+            System.out.println("The crop " + this.name + " is growing (stage 3)");
         }  else if(stage == 3) {
             System.out.println("The crop is fully grown");
             stage = 4;
@@ -81,4 +77,13 @@ public abstract class Crops {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public void addToQuantity(int quantity) {
+        this.quantity += quantity;
+    }
+
+    public void subFromQuantity(int quantity) {
+        this.quantity -= quantity;
+    }
+
 }

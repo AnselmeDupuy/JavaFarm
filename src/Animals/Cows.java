@@ -1,40 +1,37 @@
-package Crops;
+package Animals;
 
+import Crops.Crops;
 import Farm.Farm;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Button;
 import javafx.util.Duration;
 
-public class Wheat extends Crops {
+public class Cows extends Animals {
     private static int quantity;
 
-    public Wheat(String name, int price) {
-        super("Wheat", 50);
+    public Cows(String name, int price) {
+        super("Cow", 150);
     }
 
     public void growingTime(Button button, Farm farm) {
-        button.setDisable(true);
-        Timeline growingTime = new Timeline(new KeyFrame(Duration.seconds(2), e -> {
+        Timeline growingTime = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            button.setDisable(true);
             if (this.getStage() == 4) {
-                button.setDisable(false);
-                button.setText("Choose seed to plant");
                 this.harvest();
-                farm.addWheat(1);
-                System.out.println(farm.getWheat());
+                farm.addCows(1);
+                System.out.println(farm.getCows());
+                button.setDisable(false);
             } else if (this.getStage() < 4 && this.getStage() >= 0){
                 this.grow();
-                button.setText("seed planted, stage: " + this.getStage());
+                button.setText("Animal growing, stage: " + this.getStage());
                 this.addToQuantity(1);
 
             } else {
-                button.setText("Plant Seed");
+                button.setText(this.getName());
             }
         }));
         growingTime.setCycleCount(5);
         growingTime.play();
     }
-
-
-
 }
