@@ -100,6 +100,7 @@ public class FarmController {
                             button.setText("Not enough Coins");
                             growingTime.setCycleCount(3);
                             growingTime.play();
+                            choiceType.close();
                         }
                     });
 
@@ -187,6 +188,7 @@ public class FarmController {
                             growingTime.setCycleCount(3);
                             growingTime.play();
                         }
+                        choiceType.close();
                     });
                     choiceType.showAndWait();
                 });
